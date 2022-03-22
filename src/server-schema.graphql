@@ -1,3 +1,5 @@
+scalar Date
+
 type Server {
   version: String!
 }
@@ -61,14 +63,14 @@ enum DisplayCurrency {
 }
 
 type Membership {
-  createdAt: String!
+  createdAt: Date!
   createdBy: Profile
   createdByProfileId: Int!
 
-  acceptedAt: String
-  rejectedAt: String
+  acceptedAt: Date
+  rejectedAt: Date
 
-  validTo: String
+  validTo: Date
   isAdmin: Boolean!
 
   organisation: Organisation!
@@ -76,7 +78,7 @@ type Membership {
 
 type Organisation {
   id: Int!
-  createdAt: String!
+  createdAt: Date!
   circlesAddress: String
   circlesSafeOwner: String
   name: String!
@@ -169,7 +171,7 @@ type SessionInfo {
   isLoggedOn: Boolean!
   hasProfile: Boolean
   profileId: Int
-  lastAcknowledgedAt: String
+  lastAcknowledgedAt: Date
   profile: Profile
   capabilities: [Capability!]!
 }
@@ -189,7 +191,7 @@ type DelegateAuthInit {
   errorMessage: String
   challengeType: String
   delegateAuthCode: String
-  validTo: String
+  validTo: Date
 }
 
 type ConsumeDepositedChallengeResponse {
@@ -263,7 +265,7 @@ type Offer {
 
   createdByProfile: Profile
   createdByAddress: String!
-  createdAt: String!
+  createdAt: Date!
 
   title: String!
   pictureUrl: String!
@@ -284,7 +286,7 @@ type Sale {
 
   buyerAddress: String!
   buyerProfile: Profile
-  createdAt: String!
+  createdAt: Date!
 
   total: String!
   lines: [SalesLine!]
@@ -306,7 +308,7 @@ type Purchase {
 
   createdByProfile: Profile
   createdByAddress: String!
-  createdAt: String!
+  createdAt: Date!
 
   total: String!
   lines: [PurchaseLine!]
@@ -339,15 +341,15 @@ type Invoice {
   pickupCode: String
 
   buyerSignature: Boolean
-  buyerSignedDate: String
+  buyerSignedDate: Date
 
   sellerSignature: Boolean
-  sellerSignedDate: String
+  sellerSignedDate: Date
 
   paymentTransactionHash: String
   paymentTransaction: ProfileEvent
 
-  cancelledAt: String
+  cancelledAt: Date
   cancelReason: String
   cancelledBy: Profile
 }
@@ -369,7 +371,7 @@ interface IEventPayload {
 }
 
 interface IAggregatePayload {
-  lastUpdatedAt: String
+  lastUpdatedAt: Date
 }
 
 # ${user} just signed up with token ${token}
@@ -633,44 +635,44 @@ enum AggregateType {
 
 # All crc holdings of the user
 type CrcBalances implements IAggregatePayload {
-  lastUpdatedAt: String!
+  lastUpdatedAt: Date!
   total: String
   balances: [AssetBalance!]!
 }
 
 # All crc holdings of the user
 type Erc20Balances implements IAggregatePayload {
-  lastUpdatedAt: String!
+  lastUpdatedAt: Date!
   balances: [AssetBalance!]!
 }
 
 type Contacts implements IAggregatePayload {
-  lastUpdatedAt: String!
+  lastUpdatedAt: Date!
   contacts: [Contact!]!
 }
 
 type Memberships implements IAggregatePayload {
-  lastUpdatedAt: String!
+  lastUpdatedAt: Date!
   organisations: [Organisation!]!
 }
 
 type Members implements IAggregatePayload {
-  lastUpdatedAt: String!
+  lastUpdatedAt: Date!
   members: [ProfileOrOrganisation!]!
 }
 
 type Offers implements IAggregatePayload {
-  lastUpdatedAt: String!
+  lastUpdatedAt: Date!
   offers: [Offer!]!
 }
 
 type Purchases implements IAggregatePayload {
-  lastUpdatedAt: String!
+  lastUpdatedAt: Date!
   purchases: [Purchase!]!
 }
 
 type Sales implements IAggregatePayload {
-  lastUpdatedAt: String!
+  lastUpdatedAt: Date!
   sales: [Sale!]!
 }
 
@@ -683,12 +685,12 @@ type ContactPoint {
   name: String!
   directions: [ContactDirection!]!
   values: [String!]!
-  timestamps: [String!]!
+  timestamps: [Date!]!
 }
 
 type Contact {
   metadata: [ContactPoint!]!
-  lastContactAt: String!
+  lastContactAt: Date!
   contactAddress: String!
   contactAddress_Profile: Profile
 }
@@ -711,7 +713,7 @@ type ProfileAggregate {
 }
 
 type ProfileEvent {
-  timestamp: String!
+  timestamp: Date!
   block_number: Int
   transaction_index: Int
   transaction_hash: String
@@ -748,11 +750,11 @@ type NotificationEvent {
 type CreatedInvitation {
   createdBy: Profile
   createdByProfileId: Int!
-  createdAt: String!
+  createdAt: Date!
 
   claimedBy: Profile
   claimedByProfileId: Int
-  claimedAt: String
+  claimedAt: Date
 
   name: String!
   address: String!
@@ -763,11 +765,11 @@ type CreatedInvitation {
 type ClaimedInvitation {
   createdBy: Profile
   createdByProfileId: Int!
-  createdAt: String!
+  createdAt: Date!
 
   claimedBy: Profile
   claimedByProfileId: Int!
-  claimedAt: String!
+  claimedAt: Date!
 }
 
 type ClaimInvitationResult {
@@ -959,7 +961,7 @@ type VerifySafeResult {
 }
 
 type Verification {
-  createdAt: String!
+  createdAt: Date!
 
   verifierSafeAddress: String!
   verifierProfile: Organisation
@@ -967,7 +969,7 @@ type Verification {
   verifiedSafeAddress: String!
   verifiedProfile: Profile
 
-  revokedAt: String
+  revokedAt: Date
   revokedProfile: Profile
 
   verificationRewardTransactionHash: String!
@@ -980,7 +982,7 @@ enum SortOrder {
 }
 
 input PaginationArgs {
-  continueAt: String
+  continueAt: Date
   continueAtId: Int
   order: SortOrder!
   limit: Int!
@@ -1051,7 +1053,7 @@ enum AccountType {
 type SafeInfo {
   type: AccountType!
   safeAddress: String!
-  lastUbiAt: String
+  lastUbiAt: Date
   tokenAddress: String
   randomValue: String
   safeProfile: Profile

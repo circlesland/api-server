@@ -19,7 +19,7 @@ export class MembershipsSource implements AggregateSource {
       type: "Memberships",
       payload: <Memberships>{
         __typename: "Memberships",
-        lastUpdatedAt: new Date(lastUpdatedAt).toJSON(),
+        lastUpdatedAt: new Date(lastUpdatedAt),
         organisations: membershipsResult.map((o: any) => {
           return {
             circlesAddress: o.group_address

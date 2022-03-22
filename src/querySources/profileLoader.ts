@@ -152,11 +152,11 @@ export class ProfileLoader {
             verificationRewardTransaction: null,
             verifierSafeAddress:
               safeVerification.createdByOrganisation.circlesAddress,
-            createdAt: safeVerification.createdAt.toJSON(),
+            createdAt: safeVerification.createdAt,
             verifiedSafeAddress: c.circlesAddress,
             verifiedProfile: ProfileLoader.withDisplayCurrency(c),
             revokedAt: safeVerification.revokedAt
-              ? safeVerification.revokedAt.toJSON()
+              ? safeVerification.revokedAt
               : null,
             revokedProfile: ProfileLoader.withDisplayCurrency(c),
           });

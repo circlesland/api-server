@@ -27,9 +27,9 @@ export const claimedInvitation = async (parent:any, args:any, context:Context) =
         throw new Error(`The invitation with code '${claimedInvitation.code}' was claimed by profile ${profile.id} but the 'claimedAt' field is not set.`);
 
     return <ClaimedInvitation>{
-        createdAt: claimedInvitation.createdAt.toJSON(),
+        createdAt: claimedInvitation.createdAt,
         createdByProfileId: claimedInvitation.createdByProfileId,
-        claimedAt: claimedInvitation.claimedAt.toJSON(),
+        claimedAt: claimedInvitation.claimedAt,
         claimedByProfileId: claimedInvitation.claimedByProfileId
     }
 }

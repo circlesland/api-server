@@ -83,7 +83,7 @@ export class RedeemedInvitationsEventSource implements EventSource {
         type: "InvitationRedeemed",
         block_number: null,
         direction: "in",
-        timestamp: r.redeemedAt.toJSON(),
+        timestamp: r.redeemedAt,
         value: null,
         transaction_hash: null,
         transaction_index: null,

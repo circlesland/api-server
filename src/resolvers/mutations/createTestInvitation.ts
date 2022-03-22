@@ -21,7 +21,7 @@ export async function fundEoa(web3: Web3, invitation: any, context?:Context) {
     createdInviteEoas: [{
       createdBy: invitation.createdBy,
       createdByProfileId: invitation.createdByProfileId,
-      createdAt: invitation.createdAt.toJSON(),
+      createdAt: invitation.createdAt,
       name: invitation.name,
       address: invitation.address,
       balance: "0",
@@ -53,7 +53,7 @@ export async function fundEoa(web3: Web3, invitation: any, context?:Context) {
     createdInviteEoas: [{
       createdBy: invitation.createdBy,
       createdByProfileId: invitation.createdByProfileId,
-      createdAt: invitation.createdAt.toJSON(),
+      createdAt: invitation.createdAt,
       name: invitation.name,
       address: invitation.address,
       balance: "0",

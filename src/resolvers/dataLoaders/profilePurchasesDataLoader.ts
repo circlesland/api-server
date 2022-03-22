@@ -35,7 +35,7 @@ export const profilePurchasesDataLoader = new DataLoader<number, Purchase[]>(asy
 
     p[c.createdByProfileId].push({
       ...c,
-      createdAt: c.createdAt.toJSON(),
+      createdAt: c.createdAt,
       createdByAddress: c.createdBy.circlesAddress ?? "",
       total: total,
       lines: undefined

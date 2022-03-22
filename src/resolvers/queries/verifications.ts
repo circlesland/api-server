@@ -87,7 +87,7 @@ export const verifications = async (
     .map((o) => {
       return <Verification>{
         __typename: "Verification",
-        createdAt: o.createdAt.toJSON(),
+        createdAt: o.createdAt,
         verifiedSafeAddress: o.safeAddress,
         verifiedProfile: profiles[o.safeAddress],
         verifierSafeAddress: o.createdByOrganisation.circlesAddress,

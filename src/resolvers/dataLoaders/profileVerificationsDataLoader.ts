@@ -28,8 +28,8 @@ export const profileVerificationsDataLoader = new DataLoader<string, Verificatio
       verificationRewardTransactionHash: "",
       verifiedSafeAddress: c.safeAddress,
       verifierSafeAddress: c.createdByOrganisation.circlesAddress ?? "",
-      createdAt: c.createdAt.toJSON(),
-      revokedAt: c.revokedAt?.toJSON()
+      createdAt: c.createdAt,
+      revokedAt: c.revokedAt
     });
     return p;
   }, <{[x:string]:Verification[]}>{});

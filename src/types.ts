@@ -1,4 +1,4 @@
-import { GraphQLResolveInfo } from 'graphql';
+import { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -13,6 +13,7 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  Date: any;
 };
 
 export type AcceptMembershipResult = {
@@ -105,10 +106,10 @@ export type ClaimInvitationResult = {
 
 export type ClaimedInvitation = {
   __typename?: 'ClaimedInvitation';
-  claimedAt: Scalars['String'];
+  claimedAt: Scalars['Date'];
   claimedBy?: Maybe<Profile>;
   claimedByProfileId: Scalars['Int'];
-  createdAt: Scalars['String'];
+  createdAt: Scalars['Date'];
   createdBy?: Maybe<Profile>;
   createdByProfileId: Scalars['Int'];
 };
@@ -131,7 +132,7 @@ export type Contact = {
   __typename?: 'Contact';
   contactAddress: Scalars['String'];
   contactAddress_Profile?: Maybe<Profile>;
-  lastContactAt: Scalars['String'];
+  lastContactAt: Scalars['Date'];
   metadata: Array<ContactPoint>;
 };
 
@@ -148,14 +149,14 @@ export type ContactPoint = {
   __typename?: 'ContactPoint';
   directions: Array<ContactDirection>;
   name: Scalars['String'];
-  timestamps: Array<Scalars['String']>;
+  timestamps: Array<Scalars['Date']>;
   values: Array<Scalars['String']>;
 };
 
 export type Contacts = IAggregatePayload & {
   __typename?: 'Contacts';
   contacts: Array<Contact>;
-  lastUpdatedAt: Scalars['String'];
+  lastUpdatedAt: Scalars['Date'];
 };
 
 export type CrcBalanceAggregateFilter = {
@@ -165,7 +166,7 @@ export type CrcBalanceAggregateFilter = {
 export type CrcBalances = IAggregatePayload & {
   __typename?: 'CrcBalances';
   balances: Array<AssetBalance>;
-  lastUpdatedAt: Scalars['String'];
+  lastUpdatedAt: Scalars['Date'];
   total?: Maybe<Scalars['String']>;
 };
 
@@ -244,11 +245,11 @@ export type CreatedInvitation = {
   __typename?: 'CreatedInvitation';
   address: Scalars['String'];
   balance: Scalars['String'];
-  claimedAt?: Maybe<Scalars['String']>;
+  claimedAt?: Maybe<Scalars['Date']>;
   claimedBy?: Maybe<Profile>;
   claimedByProfileId?: Maybe<Scalars['Int']>;
   code: Scalars['String'];
-  createdAt: Scalars['String'];
+  createdAt: Scalars['Date'];
   createdBy?: Maybe<Profile>;
   createdByProfileId: Scalars['Int'];
   name: Scalars['String'];
@@ -268,7 +269,7 @@ export type DelegateAuthInit = {
   delegateAuthCode?: Maybe<Scalars['String']>;
   errorMessage?: Maybe<Scalars['String']>;
   success: Scalars['Boolean'];
-  validTo?: Maybe<Scalars['String']>;
+  validTo?: Maybe<Scalars['Date']>;
 };
 
 export type DepositChallenge = {
@@ -295,7 +296,7 @@ export enum DisplayCurrency {
 export type Erc20Balances = IAggregatePayload & {
   __typename?: 'Erc20Balances';
   balances: Array<AssetBalance>;
-  lastUpdatedAt: Scalars['String'];
+  lastUpdatedAt: Scalars['Date'];
 };
 
 export type Erc20Transfer = IEventPayload & {
@@ -365,7 +366,7 @@ export type GnosisSafeEthTransfer = IEventPayload & {
 };
 
 export type IAggregatePayload = {
-  lastUpdatedAt?: Maybe<Scalars['String']>;
+  lastUpdatedAt?: Maybe<Scalars['Date']>;
 };
 
 export type ICity = {
@@ -403,9 +404,9 @@ export type Invoice = {
   buyerAddress: Scalars['String'];
   buyerProfile?: Maybe<Profile>;
   buyerSignature?: Maybe<Scalars['Boolean']>;
-  buyerSignedDate?: Maybe<Scalars['String']>;
+  buyerSignedDate?: Maybe<Scalars['Date']>;
   cancelReason?: Maybe<Scalars['String']>;
-  cancelledAt?: Maybe<Scalars['String']>;
+  cancelledAt?: Maybe<Scalars['Date']>;
   cancelledBy?: Maybe<Profile>;
   id: Scalars['Int'];
   invoiceNo: Scalars['String'];
@@ -418,7 +419,7 @@ export type Invoice = {
   sellerAddress: Scalars['String'];
   sellerProfile?: Maybe<Profile>;
   sellerSignature?: Maybe<Scalars['Boolean']>;
-  sellerSignedDate?: Maybe<Scalars['String']>;
+  sellerSignedDate?: Maybe<Scalars['Date']>;
 };
 
 export type InvoiceLine = {
@@ -448,20 +449,20 @@ export type MemberAdded = IEventPayload & {
 
 export type Members = IAggregatePayload & {
   __typename?: 'Members';
-  lastUpdatedAt: Scalars['String'];
+  lastUpdatedAt: Scalars['Date'];
   members: Array<ProfileOrOrganisation>;
 };
 
 export type Membership = {
   __typename?: 'Membership';
-  acceptedAt?: Maybe<Scalars['String']>;
-  createdAt: Scalars['String'];
+  acceptedAt?: Maybe<Scalars['Date']>;
+  createdAt: Scalars['Date'];
   createdBy?: Maybe<Profile>;
   createdByProfileId: Scalars['Int'];
   isAdmin: Scalars['Boolean'];
   organisation: Organisation;
-  rejectedAt?: Maybe<Scalars['String']>;
-  validTo?: Maybe<Scalars['String']>;
+  rejectedAt?: Maybe<Scalars['Date']>;
+  validTo?: Maybe<Scalars['Date']>;
 };
 
 export type MembershipAccepted = IEventPayload & {
@@ -496,7 +497,7 @@ export type MembershipRejected = IEventPayload & {
 
 export type Memberships = IAggregatePayload & {
   __typename?: 'Memberships';
-  lastUpdatedAt: Scalars['String'];
+  lastUpdatedAt: Scalars['Date'];
   organisations: Array<Organisation>;
 };
 
@@ -691,7 +692,7 @@ export type NotificationEvent = {
 
 export type Offer = {
   __typename?: 'Offer';
-  createdAt: Scalars['String'];
+  createdAt: Scalars['Date'];
   createdByAddress: Scalars['String'];
   createdByProfile?: Maybe<Profile>;
   description?: Maybe<Scalars['String']>;
@@ -707,7 +708,7 @@ export type Offer = {
 
 export type Offers = IAggregatePayload & {
   __typename?: 'Offers';
-  lastUpdatedAt: Scalars['String'];
+  lastUpdatedAt: Scalars['Date'];
   offers: Array<Offer>;
 };
 
@@ -724,7 +725,7 @@ export type Organisation = {
   circlesSafeOwner?: Maybe<Scalars['String']>;
   city?: Maybe<City>;
   cityGeonameid?: Maybe<Scalars['Int']>;
-  createdAt: Scalars['String'];
+  createdAt: Scalars['Date'];
   description?: Maybe<Scalars['String']>;
   displayCurrency?: Maybe<DisplayCurrency>;
   id: Scalars['Int'];
@@ -742,7 +743,7 @@ export type OrganisationCreated = IEventPayload & {
 };
 
 export type PaginationArgs = {
-  continueAt?: InputMaybe<Scalars['String']>;
+  continueAt?: InputMaybe<Scalars['Date']>;
   continueAtId?: InputMaybe<Scalars['Int']>;
   limit: Scalars['Int'];
   order: SortOrder;
@@ -816,7 +817,7 @@ export type ProfileEvent = {
   safe_address: Scalars['String'];
   safe_address_profile?: Maybe<Profile>;
   tags?: Maybe<Array<Tag>>;
-  timestamp: Scalars['String'];
+  timestamp: Scalars['Date'];
   transaction_hash?: Maybe<Scalars['String']>;
   transaction_index?: Maybe<Scalars['Int']>;
   type: Scalars['String'];
@@ -867,7 +868,7 @@ export type PublicEvent = {
 
 export type Purchase = {
   __typename?: 'Purchase';
-  createdAt: Scalars['String'];
+  createdAt: Scalars['Date'];
   createdByAddress: Scalars['String'];
   createdByProfile?: Maybe<Profile>;
   id: Scalars['Int'];
@@ -902,7 +903,7 @@ export type PurchasedEventFilter = {
 
 export type Purchases = IAggregatePayload & {
   __typename?: 'Purchases';
-  lastUpdatedAt: Scalars['String'];
+  lastUpdatedAt: Scalars['Date'];
   purchases: Array<Purchase>;
 };
 
@@ -1124,7 +1125,7 @@ export type SafeAddressByOwnerResult = {
 
 export type SafeInfo = {
   __typename?: 'SafeInfo';
-  lastUbiAt?: Maybe<Scalars['String']>;
+  lastUbiAt?: Maybe<Scalars['Date']>;
   randomValue?: Maybe<Scalars['String']>;
   safeAddress: Scalars['String'];
   safeProfile?: Maybe<Profile>;
@@ -1144,7 +1145,7 @@ export type Sale = {
   __typename?: 'Sale';
   buyerAddress: Scalars['String'];
   buyerProfile?: Maybe<Profile>;
-  createdAt: Scalars['String'];
+  createdAt: Scalars['Date'];
   id: Scalars['Int'];
   invoices?: Maybe<Array<Invoice>>;
   lines?: Maybe<Array<SalesLine>>;
@@ -1169,7 +1170,7 @@ export type SaleEventFilter = {
 
 export type Sales = IAggregatePayload & {
   __typename?: 'Sales';
-  lastUpdatedAt: Scalars['String'];
+  lastUpdatedAt: Scalars['Date'];
   sales: Array<Sale>;
 };
 
@@ -1207,7 +1208,7 @@ export type SessionInfo = {
   capabilities: Array<Capability>;
   hasProfile?: Maybe<Scalars['Boolean']>;
   isLoggedOn: Scalars['Boolean'];
-  lastAcknowledgedAt?: Maybe<Scalars['String']>;
+  lastAcknowledgedAt?: Maybe<Scalars['Date']>;
   profile?: Maybe<Profile>;
   profileId?: Maybe<Scalars['Int']>;
 };
@@ -1325,8 +1326,8 @@ export type UpsertTagInput = {
 
 export type Verification = {
   __typename?: 'Verification';
-  createdAt: Scalars['String'];
-  revokedAt?: Maybe<Scalars['String']>;
+  createdAt: Scalars['Date'];
+  revokedAt?: Maybe<Scalars['Date']>;
   revokedProfile?: Maybe<Profile>;
   verificationRewardTransaction?: Maybe<ProfileEvent>;
   verificationRewardTransactionHash: Scalars['String'];
@@ -1463,6 +1464,7 @@ export type ResolversTypes = ResolversObject<{
   CreateTagInput: CreateTagInput;
   CreatedInvitation: ResolverTypeWrapper<CreatedInvitation>;
   CreatedInviteEoa: ResolverTypeWrapper<CreatedInviteEoa>;
+  Date: ResolverTypeWrapper<Scalars['Date']>;
   DelegateAuthInit: ResolverTypeWrapper<DelegateAuthInit>;
   DepositChallenge: DepositChallenge;
   DepositChallengeResponse: ResolverTypeWrapper<DepositChallengeResponse>;
@@ -1598,6 +1600,7 @@ export type ResolversParentTypes = ResolversObject<{
   CreateTagInput: CreateTagInput;
   CreatedInvitation: CreatedInvitation;
   CreatedInviteEoa: CreatedInviteEoa;
+  Date: Scalars['Date'];
   DelegateAuthInit: DelegateAuthInit;
   DepositChallenge: DepositChallenge;
   DepositChallengeResponse: DepositChallengeResponse;
@@ -1760,10 +1763,10 @@ export type ClaimInvitationResultResolvers<ContextType = any, ParentType extends
 }>;
 
 export type ClaimedInvitationResolvers<ContextType = any, ParentType extends ResolversParentTypes['ClaimedInvitation'] = ResolversParentTypes['ClaimedInvitation']> = ResolversObject<{
-  claimedAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  claimedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   claimedBy?: Resolver<Maybe<ResolversTypes['Profile']>, ParentType, ContextType>;
   claimedByProfileId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   createdBy?: Resolver<Maybe<ResolversTypes['Profile']>, ParentType, ContextType>;
   createdByProfileId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
@@ -1786,7 +1789,7 @@ export type ConsumeDepositedChallengeResponseResolvers<ContextType = any, Parent
 export type ContactResolvers<ContextType = any, ParentType extends ResolversParentTypes['Contact'] = ResolversParentTypes['Contact']> = ResolversObject<{
   contactAddress?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   contactAddress_Profile?: Resolver<Maybe<ResolversTypes['Profile']>, ParentType, ContextType>;
-  lastContactAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  lastContactAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   metadata?: Resolver<Array<ResolversTypes['ContactPoint']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
@@ -1794,20 +1797,20 @@ export type ContactResolvers<ContextType = any, ParentType extends ResolversPare
 export type ContactPointResolvers<ContextType = any, ParentType extends ResolversParentTypes['ContactPoint'] = ResolversParentTypes['ContactPoint']> = ResolversObject<{
   directions?: Resolver<Array<ResolversTypes['ContactDirection']>, ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  timestamps?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
+  timestamps?: Resolver<Array<ResolversTypes['Date']>, ParentType, ContextType>;
   values?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
 export type ContactsResolvers<ContextType = any, ParentType extends ResolversParentTypes['Contacts'] = ResolversParentTypes['Contacts']> = ResolversObject<{
   contacts?: Resolver<Array<ResolversTypes['Contact']>, ParentType, ContextType>;
-  lastUpdatedAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  lastUpdatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
 export type CrcBalancesResolvers<ContextType = any, ParentType extends ResolversParentTypes['CrcBalances'] = ResolversParentTypes['CrcBalances']> = ResolversObject<{
   balances?: Resolver<Array<ResolversTypes['AssetBalance']>, ParentType, ContextType>;
-  lastUpdatedAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  lastUpdatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   total?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
@@ -1881,11 +1884,11 @@ export type CreateOrganisationResultResolvers<ContextType = any, ParentType exte
 export type CreatedInvitationResolvers<ContextType = any, ParentType extends ResolversParentTypes['CreatedInvitation'] = ResolversParentTypes['CreatedInvitation']> = ResolversObject<{
   address?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   balance?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  claimedAt?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  claimedAt?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
   claimedBy?: Resolver<Maybe<ResolversTypes['Profile']>, ParentType, ContextType>;
   claimedByProfileId?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   code?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   createdBy?: Resolver<Maybe<ResolversTypes['Profile']>, ParentType, ContextType>;
   createdByProfileId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -1899,13 +1902,17 @@ export type CreatedInviteEoaResolvers<ContextType = any, ParentType extends Reso
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
+export interface DateScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Date'], any> {
+  name: 'Date';
+}
+
 export type DelegateAuthInitResolvers<ContextType = any, ParentType extends ResolversParentTypes['DelegateAuthInit'] = ResolversParentTypes['DelegateAuthInit']> = ResolversObject<{
   appId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   challengeType?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   delegateAuthCode?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   errorMessage?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   success?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  validTo?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  validTo?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -1917,7 +1924,7 @@ export type DepositChallengeResponseResolvers<ContextType = any, ParentType exte
 
 export type Erc20BalancesResolvers<ContextType = any, ParentType extends ResolversParentTypes['Erc20Balances'] = ResolversParentTypes['Erc20Balances']> = ResolversObject<{
   balances?: Resolver<Array<ResolversTypes['AssetBalance']>, ParentType, ContextType>;
-  lastUpdatedAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  lastUpdatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -1967,7 +1974,7 @@ export type GnosisSafeEthTransferResolvers<ContextType = any, ParentType extends
 
 export type IAggregatePayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['IAggregatePayload'] = ResolversParentTypes['IAggregatePayload']> = ResolversObject<{
   __resolveType: TypeResolveFn<'Contacts' | 'CrcBalances' | 'Erc20Balances' | 'Members' | 'Memberships' | 'Offers' | 'Purchases' | 'Sales', ParentType, ContextType>;
-  lastUpdatedAt?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  lastUpdatedAt?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
 }>;
 
 export type ICityResolvers<ContextType = any, ParentType extends ResolversParentTypes['ICity'] = ResolversParentTypes['ICity']> = ResolversObject<{
@@ -2006,9 +2013,9 @@ export type InvoiceResolvers<ContextType = any, ParentType extends ResolversPare
   buyerAddress?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   buyerProfile?: Resolver<Maybe<ResolversTypes['Profile']>, ParentType, ContextType>;
   buyerSignature?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
-  buyerSignedDate?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  buyerSignedDate?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
   cancelReason?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  cancelledAt?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  cancelledAt?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
   cancelledBy?: Resolver<Maybe<ResolversTypes['Profile']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   invoiceNo?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -2021,7 +2028,7 @@ export type InvoiceResolvers<ContextType = any, ParentType extends ResolversPare
   sellerAddress?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   sellerProfile?: Resolver<Maybe<ResolversTypes['Profile']>, ParentType, ContextType>;
   sellerSignature?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
-  sellerSignedDate?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  sellerSignedDate?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -2051,20 +2058,20 @@ export type MemberAddedResolvers<ContextType = any, ParentType extends Resolvers
 }>;
 
 export type MembersResolvers<ContextType = any, ParentType extends ResolversParentTypes['Members'] = ResolversParentTypes['Members']> = ResolversObject<{
-  lastUpdatedAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  lastUpdatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   members?: Resolver<Array<ResolversTypes['ProfileOrOrganisation']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
 export type MembershipResolvers<ContextType = any, ParentType extends ResolversParentTypes['Membership'] = ResolversParentTypes['Membership']> = ResolversObject<{
-  acceptedAt?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  acceptedAt?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   createdBy?: Resolver<Maybe<ResolversTypes['Profile']>, ParentType, ContextType>;
   createdByProfileId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   isAdmin?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   organisation?: Resolver<ResolversTypes['Organisation'], ParentType, ContextType>;
-  rejectedAt?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  validTo?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  rejectedAt?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
+  validTo?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -2099,7 +2106,7 @@ export type MembershipRejectedResolvers<ContextType = any, ParentType extends Re
 }>;
 
 export type MembershipsResolvers<ContextType = any, ParentType extends ResolversParentTypes['Memberships'] = ResolversParentTypes['Memberships']> = ResolversObject<{
-  lastUpdatedAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  lastUpdatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   organisations?: Resolver<Array<ResolversTypes['Organisation']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
@@ -2154,7 +2161,7 @@ export type NotificationEventResolvers<ContextType = any, ParentType extends Res
 }>;
 
 export type OfferResolvers<ContextType = any, ParentType extends ResolversParentTypes['Offer'] = ResolversParentTypes['Offer']> = ResolversObject<{
-  createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   createdByAddress?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   createdByProfile?: Resolver<Maybe<ResolversTypes['Profile']>, ParentType, ContextType>;
   description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
@@ -2170,7 +2177,7 @@ export type OfferResolvers<ContextType = any, ParentType extends ResolversParent
 }>;
 
 export type OffersResolvers<ContextType = any, ParentType extends ResolversParentTypes['Offers'] = ResolversParentTypes['Offers']> = ResolversObject<{
-  lastUpdatedAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  lastUpdatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   offers?: Resolver<Array<ResolversTypes['Offer']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
@@ -2182,7 +2189,7 @@ export type OrganisationResolvers<ContextType = any, ParentType extends Resolver
   circlesSafeOwner?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   city?: Resolver<Maybe<ResolversTypes['City']>, ParentType, ContextType>;
   cityGeonameid?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   displayCurrency?: Resolver<Maybe<ResolversTypes['DisplayCurrency']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
@@ -2259,7 +2266,7 @@ export type ProfileEventResolvers<ContextType = any, ParentType extends Resolver
   safe_address?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   safe_address_profile?: Resolver<Maybe<ResolversTypes['Profile']>, ParentType, ContextType>;
   tags?: Resolver<Maybe<Array<ResolversTypes['Tag']>>, ParentType, ContextType>;
-  timestamp?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  timestamp?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   transaction_hash?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   transaction_index?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   type?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -2289,7 +2296,7 @@ export type PublicEventResolvers<ContextType = any, ParentType extends Resolvers
 }>;
 
 export type PurchaseResolvers<ContextType = any, ParentType extends ResolversParentTypes['Purchase'] = ResolversParentTypes['Purchase']> = ResolversObject<{
-  createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   createdByAddress?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   createdByProfile?: Resolver<Maybe<ResolversTypes['Profile']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
@@ -2315,7 +2322,7 @@ export type PurchasedResolvers<ContextType = any, ParentType extends ResolversPa
 }>;
 
 export type PurchasesResolvers<ContextType = any, ParentType extends ResolversParentTypes['Purchases'] = ResolversParentTypes['Purchases']> = ResolversObject<{
-  lastUpdatedAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  lastUpdatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   purchases?: Resolver<Array<ResolversTypes['Purchase']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
@@ -2386,7 +2393,7 @@ export type SafeAddressByOwnerResultResolvers<ContextType = any, ParentType exte
 }>;
 
 export type SafeInfoResolvers<ContextType = any, ParentType extends ResolversParentTypes['SafeInfo'] = ResolversParentTypes['SafeInfo']> = ResolversObject<{
-  lastUbiAt?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  lastUbiAt?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
   randomValue?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   safeAddress?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   safeProfile?: Resolver<Maybe<ResolversTypes['Profile']>, ParentType, ContextType>;
@@ -2406,7 +2413,7 @@ export type SafeVerifiedResolvers<ContextType = any, ParentType extends Resolver
 export type SaleResolvers<ContextType = any, ParentType extends ResolversParentTypes['Sale'] = ResolversParentTypes['Sale']> = ResolversObject<{
   buyerAddress?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   buyerProfile?: Resolver<Maybe<ResolversTypes['Profile']>, ParentType, ContextType>;
-  createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   invoices?: Resolver<Maybe<Array<ResolversTypes['Invoice']>>, ParentType, ContextType>;
   lines?: Resolver<Maybe<Array<ResolversTypes['SalesLine']>>, ParentType, ContextType>;
@@ -2426,7 +2433,7 @@ export type SaleEventResolvers<ContextType = any, ParentType extends ResolversPa
 }>;
 
 export type SalesResolvers<ContextType = any, ParentType extends ResolversParentTypes['Sales'] = ResolversParentTypes['Sales']> = ResolversObject<{
-  lastUpdatedAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  lastUpdatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   sales?: Resolver<Array<ResolversTypes['Sale']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
@@ -2454,7 +2461,7 @@ export type SessionInfoResolvers<ContextType = any, ParentType extends Resolvers
   capabilities?: Resolver<Array<ResolversTypes['Capability']>, ParentType, ContextType>;
   hasProfile?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   isLoggedOn?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  lastAcknowledgedAt?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  lastAcknowledgedAt?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
   profile?: Resolver<Maybe<ResolversTypes['Profile']>, ParentType, ContextType>;
   profileId?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
@@ -2517,8 +2524,8 @@ export type UpdateSafeResponseResolvers<ContextType = any, ParentType extends Re
 }>;
 
 export type VerificationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Verification'] = ResolversParentTypes['Verification']> = ResolversObject<{
-  createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  revokedAt?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  revokedAt?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
   revokedProfile?: Resolver<Maybe<ResolversTypes['Profile']>, ParentType, ContextType>;
   verificationRewardTransaction?: Resolver<Maybe<ResolversTypes['ProfileEvent']>, ParentType, ContextType>;
   verificationRewardTransactionHash?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -2574,6 +2581,7 @@ export type Resolvers<ContextType = any> = ResolversObject<{
   CreateOrganisationResult?: CreateOrganisationResultResolvers<ContextType>;
   CreatedInvitation?: CreatedInvitationResolvers<ContextType>;
   CreatedInviteEoa?: CreatedInviteEoaResolvers<ContextType>;
+  Date?: GraphQLScalarType;
   DelegateAuthInit?: DelegateAuthInitResolvers<ContextType>;
   DepositChallengeResponse?: DepositChallengeResponseResolvers<ContextType>;
   Erc20Balances?: Erc20BalancesResolvers<ContextType>;

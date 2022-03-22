@@ -89,7 +89,7 @@ export class PurchasesEventSource implements EventSource {
         type: "Purchased",
         block_number: null,
         direction: "out",
-        timestamp: purchaseInvoice.createdAt.toJSON(),
+        timestamp: purchaseInvoice.createdAt,
         value: null,
         transaction_hash: null,
         transaction_index: null,
@@ -102,7 +102,7 @@ export class PurchasesEventSource implements EventSource {
             ...purchaseInvoice.purchase,
             createdByAddress: forSafeAddress,
             total: total,
-            createdAt: purchaseInvoice.purchase.createdAt.toJSON()
+            createdAt: purchaseInvoice.purchase.createdAt
           }
         },
       };

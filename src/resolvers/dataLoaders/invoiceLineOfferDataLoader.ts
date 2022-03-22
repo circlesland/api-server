@@ -25,7 +25,7 @@ export const invoiceLineOfferDataLoader = new DataLoader<number, Offer>(async (k
     const invoiceLinesByInvoice = invoiceLines.reduce((p,c) => {
       p[c.id] = {
         ...c.product,
-        createdAt: c.product.createdAt.toJSON(),
+        createdAt: c.product.createdAt,
         pictureMimeType: c.product.pictureMimeType ?? "",
         pictureUrl: c.product.pictureUrl ?? "",
         createdByAddress: c.product.createdBy.circlesAddress ?? ""

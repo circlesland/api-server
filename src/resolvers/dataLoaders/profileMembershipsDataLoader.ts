@@ -25,16 +25,16 @@ export const profileMembershipsDataLoader = new DataLoader<string, Membership[]>
         avatarMimeType: o.memberAt.avatarMimeType,
         circlesSafeOwner: o.memberAt.circlesSafeOwner?.toLowerCase(),
         description: o.memberAt.dream,
-        createdAt: o.createdAt.toJSON(), // TODO: This is the creation date of the membership, not the one of the organisation
+        createdAt: o.createdAt, // TODO: This is the creation date of the membership, not the one of the organisation
         circlesAddress: o.memberAt.circlesAddress,
         displayCurrency: o.memberAt.displayCurrency
       },
       createdByProfileId: o.createdByProfileId,
       memberAddress: o.memberAddress,
-      createdAt: o.createdAt.toJSON(),
-      acceptedAt: o.acceptedAt?.toJSON(),
-      rejectedAt: o.rejectedAt?.toJSON(),
-      validTo: o.validTo?.toJSON(),
+      createdAt: o.createdAt,
+      acceptedAt: o.acceptedAt,
+      rejectedAt: o.rejectedAt,
+      validTo: o.validTo,
       isAdmin: o.isAdmin ?? false
     }
   }).reduce((p,c) => {

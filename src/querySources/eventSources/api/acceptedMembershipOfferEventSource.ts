@@ -70,7 +70,7 @@ export class AcceptedMembershipOfferEventSource implements EventSource {
         type: "MembershipAccepted",
         block_number: null,
         direction: "in",
-        timestamp: r.createdAt.toJSON(),
+        timestamp: r.createdAt,
         value: null,
         transaction_hash: null,
         transaction_index: null,

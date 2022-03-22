@@ -42,7 +42,7 @@ async function trustContacts(forSafeAddress: string, filter?: Maybe<ProfileAggre
     [forSafeAddress.toLowerCase(), filter?.contacts?.addresses ?? []]);
 
   return trustContactsResult.rows.map(o => {
-    const timestamps = o.timestamps.map((p:any) => getDateWithOffset(new Date(p)).getTime().toString());
+    const timestamps = o.timestamps.map((p:any) => getDateWithOffset(new Date(p)));
     const lastContactAt = timestamps.reduce((p:any, c:any) => Math.max(p, parseInt(c)), 0)
     return <Contact> {
       metadata: [<ContactPoint>{
@@ -52,7 +52,7 @@ async function trustContacts(forSafeAddress: string, filter?: Maybe<ProfileAggre
           timestamps: timestamps
       }],
       contactAddress: o.contact_address,
-      lastContactAt: lastContactAt
+      lastContactAt: new Date(lastContactAt)
     };
   });
 }
@@ -94,7 +94,7 @@ async function hubTransferContacts(forSafeAddress: string, filter?: Maybe<Profil
       [forSafeAddress.toLowerCase(), filter?.contacts?.addresses ?? []]);
 
     return hubTransferContactsResult.rows.map(o => {
-      const timestamps = o.timestamps.map((p:any) => getDateWithOffset(new Date(p)).getTime().toString());
+      const timestamps = o.timestamps.map((p:any) => getDateWithOffset(new Date(p)));
       const lastContactAt = timestamps.reduce((p:any, c:any) => Math.max(p, parseInt(c)), 0);
       return <Contact> {
         metadata: [<ContactPoint>{
@@ -104,7 +104,7 @@ async function hubTransferContacts(forSafeAddress: string, filter?: Maybe<Profil
           timestamps: timestamps
         }],
         contactAddress: o.contact_address,
-        lastContactAt: lastContactAt
+        lastContactAt: new Date(lastContactAt)
       };
     });
 }
@@ -150,7 +150,7 @@ async function erc20TransferContacts(forSafeAddress: string, filter?: Maybe<Prof
       [forSafeAddress.toLowerCase(), filter?.contacts?.addresses ?? []]);
 
     return erc20TransferContactsResult.rows.map(o => {
-      const timestamps = o.timestamps.map((p:any) => getDateWithOffset(new Date(p)).getTime().toString());
+      const timestamps = o.timestamps.map((p:any) => getDateWithOffset(new Date(p)));
       const lastContactAt = timestamps.reduce((p:any, c:any) => Math.max(p, parseInt(c)), 0);
       return <Contact> {
         metadata: [<ContactPoint>{
@@ -160,7 +160,7 @@ async function erc20TransferContacts(forSafeAddress: string, filter?: Maybe<Prof
           timestamps: timestamps
         }],
         contactAddress: o.contact_address,
-        lastContactAt: lastContactAt
+        lastContactAt: new Date(lastContactAt)
       };
     });
 }
@@ -215,7 +215,7 @@ async function chatMessageContacts(forSafeAddress: string, filter?: Maybe<Profil
         timestamps: timestamps
       }],
       contactAddress: o.contact_address,
-      lastContactAt: lastContactAt
+      lastContactAt: new Date(lastContactAt)
     };
   });
 
@@ -268,7 +268,7 @@ async function invitationContacts(forSafeAddress: string, filter?: Maybe<Profile
         timestamps: timestamps
       }],
       contactAddress: o.contact_address,
-      lastContactAt: lastContactAt
+      lastContactAt: new Date(lastContactAt)
     };
   });
   return r;
@@ -308,7 +308,7 @@ async function invitationRedeemedContacts(forSafeAddress: string, filter?: Maybe
         timestamps: timestamps
       }],
       contactAddress: o.contact_address,
-      lastContactAt: lastContactAt
+      lastContactAt: new Date(lastContactAt)
     };
   });
 
@@ -374,7 +374,7 @@ async function membershipOfferContacts(forSafeAddress: string, filter?: Maybe<Pr
         timestamps: timestamps
       }],
       contactAddress: o.contact_address,
-      lastContactAt: lastContactAt
+      lastContactAt: new Date(lastContactAt)
     };
   });
 
@@ -443,7 +443,7 @@ export class ContactsSource implements AggregateSource {
         p[c.contactAddress] = {
           ...c,
           metadata: [...stored.metadata, ...c.metadata],
-          lastContactAt: (cTime > sTime ? cTime : sTime).toString()
+          lastContactAt: new Date(cTime > sTime ? cTime : sTime)
         };
       }
       return p;
@@ -454,12 +454,12 @@ export class ContactsSource implements AggregateSource {
       Object.entries(profiles).forEach(o => {
         const contact = <Contact> {
           contactAddress: o[1]?.circlesAddress,
-          lastContactAt: new Date().toJSON(),
+          lastContactAt: new Date(),
           contactAddress_Profile: o[1],
           metadata: [{
             name: "Search",
             directions: [ContactDirection.Out],
-            timestamps: [new Date().toJSON()],
+            timestamps: [new Date()],
             values: [""]
           }]
         };
@@ -472,7 +472,7 @@ export class ContactsSource implements AggregateSource {
       type: "Contacts",
       payload: <Contacts> {
         __typename: "Contacts",
-        lastUpdatedAt: latestEventAt.toString(),
+        lastUpdatedAt: new Date(latestEventAt),
         contacts: Object.values(distinctAddresses)
       }
     }];

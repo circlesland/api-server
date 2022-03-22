@@ -20,7 +20,7 @@ export function authenticateAtResolver() {
         return {
             success: true,
             appId: delegatedChallengeRequest.appId,
-            validTo: delegatedChallengeRequest.requestValidTo.toJSON(),
+            validTo: delegatedChallengeRequest.requestValidTo,
             delegateAuthCode: delegatedChallengeRequest.delegateAuthCode,
             challengeType: "delegated"
         }

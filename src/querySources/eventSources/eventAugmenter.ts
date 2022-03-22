@@ -259,7 +259,7 @@ export class MembershipOfferAugmentation implements ProfileEventAugmentation<Mem
         ...org,
         name: org.firstName,
         description: org.dream,
-        createdAt: new Date().toJSON() // TODO: Find the correct creation date
+        createdAt: new Date() // TODO: Find the correct creation date
       };
     }
   }
@@ -281,7 +281,7 @@ export class MembershipAcceptedAugmentation implements ProfileEventAugmentation<
         ...org,
         name: org.firstName,
         description: org.dream,
-        createdAt: new Date().toJSON() // TODO: Find the correct creation date
+        createdAt: new Date() // TODO: Find the correct creation date
       };
     }
   }
@@ -303,7 +303,7 @@ export class MembershipRejectedAugmentation implements ProfileEventAugmentation<
         ...org,
         name: org.firstName,
         description: org.dream,
-        createdAt: new Date().toJSON() // TODO: Find the correct creation date
+        createdAt: new Date() // TODO: Find the correct creation date
       };
     }
   }

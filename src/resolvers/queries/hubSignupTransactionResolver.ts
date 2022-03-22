@@ -44,7 +44,7 @@ export async function hubSignupTransactionResolver (parent:any, args:any, contex
     transaction_hash: hubSignupTransaction.hash,
     type: "CrcSignup",
     block_number: hubSignupTransaction.block_number,
-    timestamp: hubSignupTransaction.timestamp.toJSON(),
+    timestamp: hubSignupTransaction.timestamp,
     safe_address_profile: profile,
     payload: {
       __typename: "CrcSignup",

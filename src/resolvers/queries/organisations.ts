@@ -60,7 +60,7 @@ export function organisations(prisma: PrismaClient) {
 
       return <Organisation>{
         id: p.id,
-        createdAt: allCreationDates[p.circlesAddress ?? ""].toJSON(),
+        createdAt: allCreationDates[p.circlesAddress ?? ""],
         name: p.firstName,
         cityGeonameid: p.cityGeonameid,
         circlesAddress: p.circlesAddress,

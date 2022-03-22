@@ -63,10 +63,10 @@ export class OffersSource implements AggregateSource {
     return [<ProfileAggregate>{
       type: AggregateType.Offers,
       safe_address: forSafeAddress,
-      lastUpdatedAt: lastUpdatedAt.toJSON(),
+      lastUpdatedAt: lastUpdatedAt,
       payload: <Offers> {
         __typename: "Offers",
-        lastUpdatedAt: lastUpdatedAt.toJSON(),
+        lastUpdatedAt: lastUpdatedAt,
         offers: apiOffers
       }
     }]

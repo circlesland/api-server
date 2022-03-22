@@ -66,7 +66,7 @@ export function sendMessage(prisma: PrismaClient) {
     return <SendMessageResult>{
       event: {
         id: message.id,
-        timestamp: message.createdAt.toJSON(),
+        timestamp: message.createdAt,
         type: EventType.ChatMessage,
         direction: "out",
         safe_address: message.from,

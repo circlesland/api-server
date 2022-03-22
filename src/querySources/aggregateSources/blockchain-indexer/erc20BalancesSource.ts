@@ -32,7 +32,7 @@ export class Erc20BalancesSource implements AggregateSource {
       type: "Erc20Balances",
       payload: <Erc20Balances> {
         __typename: "Erc20Balances",
-        lastUpdatedAt: lastChangeAtTs.toJSON(),
+        lastUpdatedAt: lastChangeAtTs,
         balances: erc20BalancesResult.rows.map((o: any) => {
           return <AssetBalance> {
             token_address: o.token,

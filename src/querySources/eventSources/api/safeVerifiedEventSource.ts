@@ -66,7 +66,7 @@ export class SafeVerifiedEventSource implements EventSource {
         type: "SafeVerified",
         block_number: null,
         direction: "in",
-        timestamp: r.createdAt.toJSON(),
+        timestamp: r.createdAt,
         value: null,
         transaction_hash: null,
         transaction_index: null,

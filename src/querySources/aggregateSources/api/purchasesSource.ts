@@ -67,10 +67,10 @@ export class PurchasesSource implements AggregateSource {
       <ProfileAggregate>{
         type: AggregateType.Purchases,
         safe_address: forSafeAddress,
-        lastUpdatedAt: lastUpdatedAt.toJSON(),
+        lastUpdatedAt: lastUpdatedAt,
         payload: <Purchases>{
           __typename: "Purchases",
-          lastUpdatedAt: lastUpdatedAt.toJSON(),
+          lastUpdatedAt: lastUpdatedAt,
           purchases: <any>purchasesResult.map((o) => {
             const total = o.lines
               .reduce(
@@ -89,7 +89,7 @@ export class PurchasesSource implements AggregateSource {
                   offer: p.product,
                 };
               }),
-              createdAt: o.createdAt.toJSON(),
+              createdAt: o.createdAt,
               createdByAddress: o.createdBy.circlesAddress,
             };
           }),

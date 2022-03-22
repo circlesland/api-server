@@ -23,7 +23,7 @@ export function myInvitations() {
             ownBalance: "0",
             balance: "0",
             code: o.code,
-            createdAt: o.createdAt.toJSON(),
+            createdAt: o.createdAt,
             createdByProfileId: caller.profile?.id,
             claimedBy: o.claimedBy,
             claimedByProfileId: o.claimedByProfileId

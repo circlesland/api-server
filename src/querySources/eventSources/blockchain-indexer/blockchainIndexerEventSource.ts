@@ -162,7 +162,7 @@ export class BlockchainIndexerEventSource implements EventSource {
         type: r.type,
         block_number: r.block_number,
         direction: r.direction,
-        timestamp: ts.toJSON(),
+        timestamp: ts,
         value: r.value,
         transaction_hash: r.transaction_hash,
         transaction_index: r.transaction_index,

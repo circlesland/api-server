@@ -56,7 +56,7 @@ export class NewUserEventSource implements EventSource {
         type: "NewUser",
         block_number: null,
         direction: "in",
-        timestamp: r.createdAt.toJSON(),
+        timestamp: r.createdAt,
         value: null,
         transaction_hash: null,
         transaction_index: null,

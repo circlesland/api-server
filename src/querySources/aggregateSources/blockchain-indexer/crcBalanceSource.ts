@@ -25,7 +25,7 @@ export class CrcBalanceSource implements AggregateSource {
       type: "CrcBalances",
       payload: <CrcBalances> {
         __typename: "CrcBalances",
-        lastUpdatedAt: lastChangeAtTs.toJSON(),
+        lastUpdatedAt: lastChangeAtTs,
         balances: crcBalancesResult.rows.map((o: any) => {
           return <AssetBalance> {
             token_owner_profile: null,

@@ -14,8 +14,8 @@ export const profileClaimedInvitationDataLoader = new DataLoader<number, Claimed
   const invitationsByProfileId = invitations.map(o => <ClaimedInvitation>{
     createdByProfileId: o.createdByProfileId,
     claimedByProfileId: o.claimedByProfileId,
-    claimedAt: o.claimedAt?.toJSON(),
-    createdAt: o.createdAt.toJSON()
+    claimedAt: o.claimedAt,
+    createdAt: o.createdAt
   }).reduce((p,c) => {
     if (!p[c.claimedByProfileId]) {
       p[c.claimedByProfileId] = c;

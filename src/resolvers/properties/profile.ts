@@ -107,7 +107,7 @@ export const profilePropertyResolvers : ProfileResolvers = {
     return {
       crcBalances: {
         __typename: "CrcBalances",
-        lastUpdatedAt: crcLastChangeAtTs.toJSON(),
+        lastUpdatedAt: crcLastChangeAtTs,
         total: crcBalancesResult.rows.reduce((p,c) => p.add(new BN(c.balance)), new BN("0")).toString(),
         balances: crcBalancesResult.rows.map((o: any) => {
           return <AssetBalance> {
@@ -121,7 +121,7 @@ export const profilePropertyResolvers : ProfileResolvers = {
       },
       erc20Balances:{
         __typename: "Erc20Balances",
-        lastUpdatedAt: ercLastChangeAtTs.toJSON(),
+        lastUpdatedAt: ercLastChangeAtTs,
         balances: erc20BalancesResult.rows.map((o: any) => {
           return <AssetBalance> {
             token_address: o.token,

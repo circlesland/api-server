@@ -90,7 +90,7 @@ export class SalesEventSource implements EventSource {
         type: EventType.SaleEvent,
         block_number: null,
         direction: "in",
-        timestamp: salesInvoice.createdAt.toJSON(),
+        timestamp: salesInvoice.createdAt,
         value: null,
         transaction_hash: null,
         transaction_index: null,
@@ -109,7 +109,7 @@ export class SalesEventSource implements EventSource {
                 offer: {
                   ...o.product,
                   createdByAddress: o.product.createdBy.circlesAddress,
-                  createdAt: o.product.createdAt.toJSON(),
+                  createdAt: o.product.createdAt,
                 },
                 amount: o.amount,
               };

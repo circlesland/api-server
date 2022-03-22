@@ -26,7 +26,7 @@ export const profileOffersDataLoader = new DataLoader<number, Offer[]>(async (ke
     p[c.createdByProfileId].push({
       ...c,
       createdByAddress: c.createdBy.circlesAddress ?? "",
-      createdAt: c.createdAt.toJSON(),
+      createdAt: c.createdAt,
       pictureMimeType: c.pictureMimeType ?? "",
       pictureUrl: c.pictureUrl ?? ""
     });

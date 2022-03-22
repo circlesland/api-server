@@ -81,7 +81,7 @@ export const queryResolvers : QueryResolvers = {
         ...ProfileLoader.withDisplayCurrency(o),
         __typename: "Organisation",
         name: o.firstName,
-        createdAt: o.createdAt.toJSON()
+        createdAt: o.createdAt
       }
     });
   }

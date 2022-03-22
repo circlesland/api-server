@@ -171,7 +171,7 @@ export class ChatMessageEventSource implements EventSource {
           type: "ChatMessage",
           block_number: null,
           direction: r.from == forSafeAddress ? "out" : "in",
-          timestamp: r.createdAt.toJSON(),
+          timestamp: r.createdAt,
           value: null,
           transaction_hash: null,
           transaction_index: null,

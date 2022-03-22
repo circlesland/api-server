@@ -86,10 +86,10 @@ export class SalesSource implements AggregateSource {
       <ProfileAggregate>{
         type: AggregateType.Sales,
         safe_address: forSafeAddress,
-        lastUpdatedAt: lastUpdatedAt.toJSON(),
+        lastUpdatedAt: lastUpdatedAt,
         payload: <Sales>{
           __typename: "Sales",
-          lastUpdatedAt: lastUpdatedAt.toJSON(),
+          lastUpdatedAt: lastUpdatedAt,
           sales: <any>salesResult.map((o) => {
             const total = o.lines
               .reduce(
@@ -117,7 +117,7 @@ export class SalesSource implements AggregateSource {
                   buyerAddress: o.invoices[0].customerProfile.circlesAddress,
                 };
               }),
-              createdAt: o.createdAt.toJSON(),
+              createdAt: o.createdAt,
               createdByAddress: forSafeAddress,
             };
           }),

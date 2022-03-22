@@ -93,7 +93,7 @@ export async function purchaseResolver(parent: any, args: MutationPurchaseArgs, 
           offer: {
             ...p.product,
             createdByAddress: p.product.createdBy.circlesAddress,
-            createdAt: p.product.createdAt.toJSON()
+            createdAt: p.product.createdAt
           }
         }
       })

@@ -29,7 +29,7 @@ export const organisationOffersDataLoader = new DataLoader<string, Offer[]>(asyn
     const currentOffer = <Offer>{
       ...c,
       createdByAddress: c.createdBy.circlesAddress,
-      createdAt: c.createdAt.toJSON(),
+      createdAt: c.createdAt,
       pictureUrl: c.pictureUrl ?? ""
     };
 

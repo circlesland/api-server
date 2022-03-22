@@ -12,9 +12,20 @@ import {claimedInvitationPropertyResolver} from "./properties/claimedInvitation"
 import {profileEventPropertyResolver} from "./properties/profileEvent";
 import {offerPropertyResolver} from "./properties/offer";
 import {organisationPropertyResolver} from "./properties/organsiation";
+import {GraphQLScalarType} from "graphql";
 
 export const resolvers: Resolvers = {
   ...{
+    Date: new GraphQLScalarType({
+      name: 'Date',
+      description: 'Date custom scalar type',
+      parseValue(value) {
+        return new Date(value); // value from the client
+      },
+      serialize(value) {
+        return value.toJSON(); // value sent to the client
+      }
+    }),
     Profile: profilePropertyResolvers,
     Contact: contactPropertyResolver,
     Purchase: purchasePropertyResolvers,

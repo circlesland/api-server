@@ -34,7 +34,7 @@ export const invoicePaymentTransactionDataLoader = new DataLoader<InvoicePayment
       type: c.type,
       block_number: c.block_number,
       direction: c.direction,
-      timestamp: ts.toJSON(),
+      timestamp: ts,
       value: c.value,
       transaction_hash: c.transaction_hash,
       transaction_index: c.transaction_index,

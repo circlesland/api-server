@@ -91,7 +91,7 @@ export class WelcomeMessageEventSource implements EventSource {
           type: EventType.WelcomeMessage,
           block_number: null,
           direction: "in",
-          timestamp: r.redeemedAt.toJSON(),
+          timestamp: r.redeemedAt,
           value: null,
           transaction_hash: null,
           transaction_index: null,

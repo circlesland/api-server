@@ -55,9 +55,9 @@ export const completePurchase = async (parent:any, args:MutationCompletePurchase
     sellerAddress: invoice.sellerProfile.circlesAddress ?? "",
     buyerProfile: ProfileLoader.withDisplayCurrency(invoice.customerProfile),
     sellerProfile: ProfileLoader.withDisplayCurrency(invoice.sellerProfile),
-    buyerSignedDate: invoice.buyerSignedDate?.toJSON(),
-    sellerSignedDate: invoice.sellerSignedDate?.toJSON(),
-    cancelledAt: invoice.cancelledAt?.toJSON(),
+    buyerSignedDate: invoice.buyerSignedDate,
+    sellerSignedDate: invoice.sellerSignedDate,
+    cancelledAt: invoice.cancelledAt,
     cancelledBy: ProfileLoader.withDisplayCurrency(invoice.cancelledBy),
     cancelReason: invoice.cancelReason,
     lines: invoice.lines.map(l => {
@@ -67,7 +67,7 @@ export const completePurchase = async (parent:any, args:MutationCompletePurchase
           ...l.product,
           pictureUrl: l.product.pictureUrl ?? "",
           pictureMimeType: l.product.pictureMimeType ?? "",
-          createdAt: l.product.createdAt.toJSON(),
+          createdAt: l.product.createdAt,
           createdByAddress: l.product.createdBy.circlesAddress ?? "",
           createdByProfile: ProfileLoader.withDisplayCurrency(l.product.createdBy)
         }

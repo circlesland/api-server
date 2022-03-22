@@ -11,7 +11,7 @@ export const regionsResolver = async (parent:any, args:any, context:Context) => 
   return regions.map(o => {
     return <Organisation>{
       id: o.id,
-      createdAt: o.lastUpdateAt.toJSON(),
+      createdAt: o.lastUpdateAt,
       name: o.firstName,
       cityGeonameid: o.cityGeonameid,
       circlesAddress: o.circlesAddress,

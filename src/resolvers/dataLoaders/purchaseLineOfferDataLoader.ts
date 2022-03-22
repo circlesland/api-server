@@ -25,7 +25,7 @@ export const purchaseLineOfferDataLoader = new DataLoader<number, Offer>(async (
     const offersByPurchaseLineId = purchaseLines.reduce((p,c) => {
       p[c.id] = {
         ...c.product,
-        createdAt: c.product.createdAt.toJSON(),
+        createdAt: c.product.createdAt,
         pictureMimeType: c.product.pictureMimeType ?? "",
         pictureUrl: c.product.pictureUrl ?? "",
         createdByAddress: c.product.createdBy.circlesAddress ?? ""

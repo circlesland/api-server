@@ -68,7 +68,7 @@ export const profileInvitationTransactionDataLoader = new DataLoader<string, Pro
           transaction_hash: o.tx?.hash,
           type: "EthTransfer",
           block_number: o.tx?.block_number,
-          timestamp: o.tx?.timestamp?.toJSON(),
+          timestamp: o.tx?.timestamp,
           safe_address_profile: o.profile,
           payload: {
             __typename: "EthTransfer",

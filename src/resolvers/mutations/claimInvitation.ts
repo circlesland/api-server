@@ -44,9 +44,9 @@ export function claimInvitation() {
         return <ClaimInvitationResult>{
             success: true,
             claimedInvitation: {
-                createdAt: claimedInvitation.createdAt.toJSON(),
+                createdAt: claimedInvitation.createdAt,
                 createdByProfileId: claimedInvitation.createdByProfileId,
-                claimedAt: claimedInvitation.claimedAt.toJSON(),
+                claimedAt: claimedInvitation.claimedAt,
                 claimedByProfileId: claimedInvitation.claimedByProfileId
             }
         };

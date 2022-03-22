@@ -32,7 +32,7 @@ export const profileSalesDataLoader = new DataLoader<number, Sale[]>(async (keys
 
     p[c.sellerProfileId].push({
       id: c.id,
-      createdAt: c.createdAt.toJSON(),
+      createdAt: c.createdAt,
       total: total,
       buyerAddress: c.customerProfile.circlesAddress ?? "",
       sellerAddress: c.sellerProfile.circlesAddress ?? ""

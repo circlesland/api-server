@@ -53,7 +53,7 @@ export function invitationTransaction() {
             transaction_hash: redeemTransaction.hash,
             type: "EthTransfer",
             block_number: redeemTransaction.block_number,
-            timestamp: redeemTransaction.timestamp.toJSON(),
+            timestamp: redeemTransaction.timestamp,
             safe_address_profile: profile,
             payload: {
                 __typename: "EthTransfer",
