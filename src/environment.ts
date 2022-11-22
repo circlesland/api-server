@@ -127,11 +127,6 @@ export class Environment {
     }
 
     if (logInfo) {
-      console.log(`* Testing connection to the utility-db ...`);
-    }
-    await this.utilityDb.query("select 1");
-
-    if (logInfo) {
       console.log(`  Success`);
       console.log(`* Testing connection to the indexer-db ...`);
     }
@@ -317,6 +312,10 @@ export class Environment {
       });
     }
     return this._readWriteApiDb;
+  }
+
+  static get pathfinderUrl(): string {
+    return <string>process.env.PATHFINDER_URL;
   }
 
   static get corsOrigins(): string {

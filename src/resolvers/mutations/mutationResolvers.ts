@@ -3,7 +3,6 @@ import { logout } from "./logout";
 import { requestUpdateSafe } from "./requestUpdateSafe";
 import { updateSafe } from "./updateSafe";
 import { upsertTag } from "./upsertTag";
-import { sendMessage } from "./sendMessage";
 import { tagTransaction } from "./tagTransaction";
 import { acknowledge } from "./acknowledge";
 import { claimInvitation } from "./claimInvitation";
@@ -14,36 +13,23 @@ import { addMemberResolver } from "./addMember";
 import { removeMemberResolver } from "./removeMember";
 import { requestSessionChallenge } from "./requestSessionChallenge";
 import { importOrganisationsOfAccount } from "./importOrganisationsOfAccount";
-import { completePurchase } from "./completePurchase";
-import { completeSale } from "./completeSale";
 import { revokeSafeVerification, verifySafe } from "./verifySafe";
-import { announcePayment } from "./announcePayment";
 import { Environment } from "../../environment";
 import {
-  MutationPayWithPathArgs,
+  LinkTargetType,
   MutationResolvers,
 } from "../../types";
-import { TransitivePath, TransitiveTransfer } from "../../types";
-import { upsertOffer } from "./upsertOffer";
-import { upsertShop } from "./upsertShop";
-import { upsertShopCategories } from "./upsertShopCategories";
-import { upsertShopCategoryEntries } from "./upsertShopCategoryEntries";
 import { proofUniqueness } from "./proofUniqueness";
-import { upsertShippingAddress } from "./upsertShippingAddress";
-import { purchaseResolver } from "./purchase";
-import { isBALIMember, isBILMember } from "../../utils/canAccess";
 import { Context } from "../../context";
-import BN from "bn.js";
-import { confirmLegalAge } from "./confirmLegalAge";
 import { addNewLang } from "./addNewLang";
 import { updatei18nValue } from "./updatei18nValue";
-import { BalanceQueries } from "../../querySources/balanceQueries";
-import { EncryptJWT } from "jose";
 import { createNewStringAndKey } from "./createNewStringAndKey";
 import { setStringUpdateState } from "./setStringUpdateState";
+import {ProfileLoader} from "../../querySources/profileLoader";
+import {Generate} from "../../utils/generate";
+import {RpcGateway} from "../../circles/rpcGateway";
 
 export const mutationResolvers: MutationResolvers = {
-  purchase: purchaseResolver,
   upsertOrganisation: <any>upsertOrganisation(false),
   upsertRegion: <any>upsertOrganisation(true),
   logout: logout(),
@@ -52,7 +38,6 @@ export const mutationResolvers: MutationResolvers = {
   updateSafe: updateSafe(Environment.readWriteApiDb),
   upsertTag: upsertTag(),
   tagTransaction: tagTransaction(),
-  sendMessage: sendMessage(Environment.readWriteApiDb),
   acknowledge: acknowledge(),
   claimInvitation: claimInvitation(),
   redeemClaimedInvitation: redeemClaimedInvitation(),
@@ -61,71 +46,68 @@ export const mutationResolvers: MutationResolvers = {
   addMember: addMemberResolver,
   removeMember: removeMemberResolver,
   importOrganisationsOfAccount: <any>importOrganisationsOfAccount,
-  completePurchase: completePurchase,
-  completeSale: completeSale,
   verifySafe: verifySafe,
   revokeSafeVerification: revokeSafeVerification,
-  announcePayment: announcePayment(),
   addNewLang: addNewLang,
   updateValue: updatei18nValue,
   createNewStringAndKey: createNewStringAndKey,
   setStringUpdateState: setStringUpdateState,
-  upsertOffer: upsertOffer,
-  upsertShop: upsertShop,
-  upsertShopCategories: upsertShopCategories,
-  upsertShopCategoryEntries: upsertShopCategoryEntries,
   proofUniqueness: proofUniqueness,
-  upsertShippingAddress: upsertShippingAddress,
-  confirmLegalAge: confirmLegalAge,
+  setIsFavorite: async (parent, args, context: Context) => {
+    const caller = await context.callerInfo;
+    if (!caller?.profile?.circlesAddress)
+      throw new Error(`Only profiles with a circlesAddress can create favorites.`);
 
-  payWithPath: async (parent: any, args: MutationPayWithPathArgs, context: Context) => {
-    const ci = await context.callerInfo;
-    if (!ci?.profile) {
-      throw new Error("You need to be logged in to use this method.");
+    const circlesAddress = args.circlesAddress.toLowerCase();
+    const existingFavorite = await Environment.readWriteApiDb.favorites.findFirst({where:{favoriteCirclesAddress: circlesAddress}});
+    const favoriteProfile = await new ProfileLoader().profilesBySafeAddress(Environment.readWriteApiDb, [circlesAddress]);
+
+    if (!favoriteProfile[circlesAddress])
+      throw new Error(`Couldn't find a profile for circles address ${circlesAddress}.`);
+
+    if (!existingFavorite && args.isFavorite) {
+      await Environment.readWriteApiDb.favorites.create({
+        data: {
+          createdAt: new Date().toJSON(),
+          createdByCirclesAddress: caller.profile.circlesAddress,
+          favoriteCirclesAddress: circlesAddress,
+          comment: null
+        }
+      });
+      return true;
     }
-
-    const trustedTokenBalances = await BalanceQueries.getHumanodeVerifiedTokens(args.from);
-
-    let remainingAmount = new BN(args.amount);
-    const transfers: TransitivePath[] = [];
-
-    while (remainingAmount.gt(new BN("0"))) {
-      const trustedToken = trustedTokenBalances.shift();
-      if (!trustedToken) {
-        throw new Error("Not enough tokens to pay with.");
-      }
-
-      remainingAmount = remainingAmount.sub(trustedToken.balance);
-
-      transfers.push(<TransitivePath>{});
+    if (existingFavorite && !args.isFavorite) {
+      await Environment.readWriteApiDb.favorites.delete({
+        where: {
+          id: existingFavorite.id
+        }
+      });
     }
-
-    const myTokenAddress = ci.profile.circlesAddress;
-    const trustedTokenBalanceSum = trustedTokenBalances.reduce((acc, cur) => acc.add(cur.balance), new BN(0));
-
-    if (trustedTokenBalanceSum.lt(new BN(args.amount))) {
-      // Not enough tokens
-      return <TransitivePath>{
-        success: false,
-        flow: trustedTokenBalanceSum.toString(),
-        requestedAmount: args.amount,
-        transfers: [],
-      };
-    }
-
-    return <TransitivePath>{
-      flow: args.amount,
-      requestedAmount: args.amount,
-      transfers: trustedTokenBalances.map((o) => {
-        return <TransitiveTransfer>{
-          isHubTransfer: false,
-          from: o.safeAddress,
-          to: args.to,
-          value: "1",
-          token: o.token,
-          tokenOwner: o.tokenOwner,
-        };
-      }),
-    };
+    return false;
   },
+  shareLink: async (parent, args, context) => {
+    const caller = await context.callerInfo;
+    if (!caller?.profile?.circlesAddress)
+      throw new Error(`Only profiles with a circlesAddress can share links.`);
+
+    if ([LinkTargetType.Business, LinkTargetType.Person].indexOf(args.targetType) < 0)
+      throw new Error(`'targetType' must be either '${LinkTargetType.Business}' or '${LinkTargetType.Person}'`);
+
+    if (!RpcGateway.get().utils.isAddress(args.targetKey))
+      throw new Error(`'targetKey' must be an ethereum address`);
+
+    const link = await Environment.readWriteApiDb.link.create({
+      data: {
+        id: Generate.randomHexString(),
+        createdAt: new Date().toJSON(),
+        createdByCirclesAddress: caller.profile.circlesAddress,
+        linkTargetKeyField: "circlesAddress",
+        linkTargetKey: args.targetKey,
+        linkTargetType: args.targetType
+      }
+    });
+
+    const protocol = Environment.isLocalDebugEnvironment ? "http://" : "https://";
+    return protocol + Environment.externalDomain + "/link?id=" + link.id;
+  }
 };

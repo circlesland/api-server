@@ -448,7 +448,7 @@ model Link {
 }
 
 model BusinessCategory {
-    id Int @id @default(autoincrement()) 
+    id Int @id @default(autoincrement())
     name String
     profilesWithCategory Profile[] @relation("Profile_BusinessCategory")
 }

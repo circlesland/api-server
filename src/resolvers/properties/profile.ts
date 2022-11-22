@@ -1,23 +1,18 @@
-import { AssetBalance, PostAddress, Profile, ProfileOrigin, ProfileResolvers } from "../../types";
+import {AssetBalance, Favorite, Profile, ProfileOrigin, ProfileResolvers} from "../../types";
 import { Context } from "../../context";
 import { Environment } from "../../environment";
 import { getDateWithOffset } from "../../utils/getDateWithOffset";
 import BN from "bn.js";
-import { profileCityDataLoader } from "../dataLoaders/profileCityDataLoader";
 import { profileMembershipsDataLoader } from "../dataLoaders/profileMembershipsDataLoader";
-import { profileOffersDataLoader } from "../dataLoaders/profileOffersDataLoader";
 import { profileVerificationsDataLoader } from "../dataLoaders/profileVerificationsDataLoader";
-import { profilePurchasesDataLoader } from "../dataLoaders/profilePurchasesDataLoader";
-import { profileSalesDataLoader } from "../dataLoaders/profileSalesDataLoader";
 import { profilePublicContactsDataLoader } from "../dataLoaders/profilePublicContactsDataLoader";
 import { profileAllContactsDataLoader } from "../dataLoaders/profileAllContactsDataLoader";
 import { profileClaimedInvitationDataLoader } from "../dataLoaders/profileClaimedInvitationDataLoader";
 import { profileInvitationTransactionDataLoader } from "../dataLoaders/profileInvitationTransactionDataLoader";
 import { profileCirclesTokenAddressDataLoader } from "../dataLoaders/profileCirclesTokenAddressDataLoader";
 import { profileMembersDataLoader } from "../dataLoaders/profileMembersDataLoader";
-import { profileShopsDataLoader } from "../dataLoaders/profileShopsDataLoader";
-import { UtilityDbQueries } from "../../querySources/utilityDbQueries";
 import { provenUniquenessDataLoader } from "../dataLoaders/provenUniquenessDataLoader";
+import {ProfileLoader} from "../../querySources/profileLoader";
 
 function isOwnProfile(profileId: number, context: Context): boolean {
   return !!context.session?.profileId && context.session.profileId == profileId;
@@ -53,25 +48,18 @@ export const profilePropertyResolvers: ProfileResolvers = {
 
     return `https://${Environment.externalDomain}/trigger?hash=${inviteTrigger.hash}`;
   },
+  lat: async (parent: Profile, args: any, context: Context) => isOwnProfile(parent.id, context) && parent.lat !== undefined ? parent.lat : null,
+  lon: async (parent: Profile, args: any, context: Context) => isOwnProfile(parent.id, context) && parent.lon !== undefined ? parent.lon : null,
+  location: async (parent: Profile, args: any, context: Context) => isOwnProfile(parent.id, context) && parent.location !== undefined ? parent.location : null,
   askedForEmailAddress: async (parent: Profile, args: any, context: Context) =>
     isOwnProfile(parent.id, context) && parent.askedForEmailAddress ? parent.askedForEmailAddress : false,
   newsletter: async (parent: Profile, args: any, context: Context) =>
     isOwnProfile(parent.id, context) && parent.newsletter !== undefined ? parent.newsletter : null,
-  city: async (parent: Profile) => {
-    if (!parent.cityGeonameid) return null;
-    return await profileCityDataLoader.load(parent.cityGeonameid);
-  },
   memberships: async (parent: Profile, args: any, context: Context) => {
     if (!parent.circlesAddress) {
       return [];
     }
     return await profileMembershipsDataLoader.load(parent.circlesAddress);
-  },
-  shops: async (parent: Profile, args: any, context: Context) => {
-    if (!parent.circlesAddress) {
-      return [];
-    }
-    return await profileShopsDataLoader.load(parent.id);
   },
   members: async (parent: Profile, args: any, context: Context) => {
     if (!parent.circlesAddress) {
@@ -79,29 +67,11 @@ export const profilePropertyResolvers: ProfileResolvers = {
     }
     return await profileMembersDataLoader.load(parent.circlesAddress);
   },
-  offers: async (parent: Profile, args: any, context: Context) => {
-    if (!parent.circlesAddress) {
-      return [];
-    }
-    return await profileOffersDataLoader.load(parent.id);
-  },
   verifications: async (parent: Profile, args: any, context: Context) => {
     if (!parent.circlesAddress) {
       return [];
     }
     return await profileVerificationsDataLoader.load(parent.circlesAddress);
-  },
-  purchases: async (parent: Profile, args: any, context: Context) => {
-    if (!parent.circlesAddress || !isOwnProfile(parent.id, context)) {
-      return [];
-    }
-    return await profilePurchasesDataLoader.load(parent.id);
-  },
-  sales: async (parent: Profile, args: any, context: Context) => {
-    if (!parent.circlesAddress || !isOwnProfile(parent.id, context)) {
-      return [];
-    }
-    return await profileSalesDataLoader.load(parent.id);
   },
   balances: async (parent: Profile, args: any, context: Context) => {
     if (!parent.circlesAddress) {
@@ -212,38 +182,26 @@ export const profilePropertyResolvers: ProfileResolvers = {
     }
     return await provenUniquenessDataLoader.load(parent.circlesAddress);
   },
-  shippingAddresses: async (parent: Profile, args: any, context: Context) => {
-    if (!parent.circlesAddress) {
-      return null;
+  favorites:  async (parent: Profile, args: any, context: Context) => {
+    if (!parent.circlesAddress || !isOwnProfile(parent.id, context)) {
+      return [];
     }
-    if (!isOwnProfile(parent.id, context)) {
-      return null;
-    }
-
-    const shippingAddresses = await Environment.readWriteApiDb.postAddress.findMany({
+    const favorites = await Environment.readonlyApiDb.favorites.findMany({
       where: {
-        shippingAddressOfProfileId: parent.id,
-      },
+        createdByCirclesAddress: parent.circlesAddress
+      }
     });
 
-    return await Promise.all(
-      shippingAddresses
-        .filter((o) => o.cityGeonameid)
-        .map(async (o) => {
-          const place = await UtilityDbQueries.placesById([o.cityGeonameid ?? 0]);
-          return <PostAddress>{
-            id: o.id,
-            name: o.name,
-            city: place[0].name,
-            cityGeonameid: o.cityGeonameid,
-            country: place[0].country,
-            zip: o.zip,
-            house: o.house,
-            state: o.state,
-            street: o.street,
-            notificationEmail: o.notificationEmail,
-          };
-        })
-    );
-  },
+    const favoriteProfiles = await new ProfileLoader().profilesBySafeAddress(
+      Environment.readonlyApiDb,
+      favorites.map(o => o.favoriteCirclesAddress));
+
+    return favorites.map(o => {
+      return <Favorite> {
+        createdBy: parent,
+        favorite: favoriteProfiles[o.favoriteCirclesAddress],
+        createdAt: o.createdAt.toJSON()
+      }
+    });
+  }
 };
