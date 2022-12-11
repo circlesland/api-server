@@ -913,20 +913,6 @@ enum LinkTargetType {
   Person
 }
 
-type ExportProfile {
-  lastChange: Date!
-  circlesAddress: String!
-  displayName: String!
-  avatarUrl: String
-}
-
-type ExportTrustRelation {
-  lastChange: Date!
-  trusterAddress: String!
-  trusteeAddress: String!
-  trustLimit: Int!
-}
-
 type RandomAccount {
   privateKey: String
   address: String
