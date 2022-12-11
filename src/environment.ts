@@ -314,10 +314,6 @@ export class Environment {
     return this._readWriteApiDb;
   }
 
-  static get pathfinderUrl(): string {
-    return <string>process.env.PATHFINDER_URL;
-  }
-
   static get corsOrigins(): string {
     return <string>process.env.CORS_ORIGNS;
   }
