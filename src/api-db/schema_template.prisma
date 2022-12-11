@@ -432,8 +432,6 @@ model Favorites {
 model UnreadEvent {
     id Int @id @default(autoincrement())
     timestamp String
-    block_number Int?
-    transaction_index Int?
     transaction_hash String?
     type String
     safe_address String
