@@ -1703,7 +1703,7 @@ export type TransitiveTransfer = {
   from: Scalars['String'];
   isHubTransfer?: Maybe<Scalars['Boolean']>;
   to: Scalars['String'];
-  token: Scalars['String'];
+  token?: Maybe<Scalars['String']>;
   tokenOwner: Scalars['String'];
   value: Scalars['String'];
 };
@@ -3223,7 +3223,7 @@ export type TransitiveTransferResolvers<ContextType = any, ParentType extends Re
   from?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   isHubTransfer?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   to?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  token?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  token?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   tokenOwner?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   value?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;

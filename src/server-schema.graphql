@@ -1114,7 +1114,7 @@ type TransitiveTransfer {
   isHubTransfer: Boolean
   from: String!
   to: String!
-  token: String!
+  token: String
   tokenOwner: String!
   value: String!
 }
