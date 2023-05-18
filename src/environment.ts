@@ -407,6 +407,10 @@ export class Environment {
     );
   }
 
+  static get pathfinderUrl(): string {
+    return <string>process.env.PATHFINDER_URL;
+  }
+
   static get invitationFundsSafeOwner(): Account {
     return RpcGateway.get().eth.accounts.privateKeyToAccount(
       <string>process.env.INVITATION_FUNDS_SAFE_KEY?.toLowerCase()
